@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxust.community.dao.UserMapper">
+
+    <sql id="insertFields">
+        username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+
+    <sql id="selectFields">
+        id,username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+
+    <select id="selectById" parameterType="Integer" resultType="User">
+        SELECT
+        <include refid="selectFields"></include>
+        FROM USER
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByName" parameterType="String" resultType="User">
+        SELECT
+        <include refid="selectFields"></include>
+        FROM USER
+        WHERE username = #{username}
+    </select>
+
+    <select id="selectByEmail" parameterType="String" resultType="User">
+        SELECT
+        <include refid="selectFields"></include>
+        FROM USER
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="User" keyProperty="id">
+        INSERT INTO USER (<include refid="insertFields"></include>)
+        VALUES (#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode},
+        #{headerUrl}, #{createTime})
+    </insert>
+
+    <update id="updateStatus" parameterType="Integer">
+        UPDATE USER set status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateHeader">
+        UPDATE USER set header_url = #{headerUrl} where id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE USER set password = #{password} where id = #{id}
+    </update>
+</mapper>
